@@ -24,7 +24,7 @@ public class MovieLoader extends AsyncTaskLoader<ArrayList<MovieInfo>>{
     @Nullable
     @Override
     public ArrayList<MovieInfo> loadInBackground() {
-        DataFetch dataFetch = new DataFetch();
+        DataFetch dataFetch = new DataFetch(getContext());
         return dataFetch.makeAPICall("PopularMovies", authority, apiKey);
     }
 
