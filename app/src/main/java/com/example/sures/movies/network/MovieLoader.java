@@ -11,9 +11,11 @@ import java.util.ArrayList;
 public class MovieLoader extends AsyncTaskLoader<ArrayList<MovieInfo>>{
     private final String apiKey = "cdebd4c255c625febb97e2f91c1ed9e5";
     private final String authority = "https://api.themoviedb.org";
+    private Context context;
 
     public MovieLoader(@NonNull Context context) {
         super(context);
+        this.context = context;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class MovieLoader extends AsyncTaskLoader<ArrayList<MovieInfo>>{
     @Nullable
     @Override
     public ArrayList<MovieInfo> loadInBackground() {
-        DataFetch dataFetch = new DataFetch(getContext());
+        DataFetch dataFetch = new DataFetch(this.context);
         return dataFetch.makeAPICall("PopularMovies", authority, apiKey);
     }
 

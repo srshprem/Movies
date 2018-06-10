@@ -67,8 +67,6 @@ public class DataFetch {
     /*Parse Response*/
     private ArrayList parseResponse (String response) {
         ArrayList movieCollection = new ArrayList <MovieInfo>();
-        new MoviesContentProvider();
-
         try {
             JSONObject root = new JSONObject(response);
             JSONArray results = root.getJSONArray("results");
@@ -87,6 +85,9 @@ public class DataFetch {
                 contentValues.put(MoviesContract.MoviesEntry.COLUMN_OVERVIEW, jsonObject.getString("overview"));
                 contentValues.put(MoviesContract.MoviesEntry.COLUMN_VOTE_AVERAGE, jsonObject.getString("vote_average"));
                 contentValues.put(MoviesContract.MoviesEntry.COLUMN_RELEASE_DATE, jsonObject.getString("release_date"));
+                contentValues.put(MoviesContract.MoviesEntry.COLUMN_MOVIE_ID, jsonObject.getInt("id"));
+                contentValues.put(MoviesContract.MoviesEntry.COLUMN_TRAILER, " ");
+                contentValues.put(MoviesContract.MoviesEntry.COLUMN_REVIEW," ");
 
                 this.context.getContentResolver().insert(MoviesContract.MoviesEntry.CONTENT_POPULAR_MOVIES_URI, contentValues);
                 counter++;

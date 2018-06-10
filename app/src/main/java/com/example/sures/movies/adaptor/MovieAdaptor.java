@@ -1,5 +1,6 @@
 package com.example.sures.movies.adaptor;
 import android.content.Context;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import  android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,13 +13,12 @@ import com.example.sures.movies.data.*;
 import java.util.ArrayList;
 
 public class MovieAdaptor extends RecyclerView.Adapter<MovieAdaptor.MovieViewHolder>{
-    private int mTotalItems;
-    private final ArrayList<MovieInfo> mData;
+    private Cursor mCursor;
+    private final Context mContext;
     final private ItemOnClickListener mItemOnClickListener;
 
-    public MovieAdaptor (ArrayList<MovieInfo> data, ItemOnClickListener itemOnClickListener) {
-        this.mTotalItems = data.size();
-        this.mData = data;
+    public MovieAdaptor (Context context, ItemOnClickListener itemOnClickListener) {
+        this.mContext = context;
         this.mItemOnClickListener = itemOnClickListener;
     }
 
@@ -27,7 +27,11 @@ public class MovieAdaptor extends RecyclerView.Adapter<MovieAdaptor.MovieViewHol
     }
 
     public MovieInfo getItem (int index) {
-       return this.mData.get(index);
+        if (this.mCursor != null) {
+            this.mCursor.moveToPosition(index);
+            return new MovieInfo(this.mCursor.getString(0), this.mCursor.getString(1), this.mCursor.getString(2), this.mCursor.getString(3), this.mCursor.getString(4));
+        }
+        return null;
     }
 
     @NonNull
@@ -48,13 +52,14 @@ public class MovieAdaptor extends RecyclerView.Adapter<MovieAdaptor.MovieViewHol
 
     @Override
     public int getItemCount() {
-        return mTotalItems;
+        if (this.mCursor != null) {
+            this.mCursor.getCount();
+        }
+        return 0;
     }
 
-    public void updateData (ArrayList<MovieInfo> dataSource) {
-        this.mData.clear();
-        this.mData.addAll(dataSource);
-        this.mTotalItems = dataSource.size();
+    public void updateData (Cursor cursor) {
+        this.mCursor = cursor;
         notifyDataSetChanged();
     }
 
@@ -68,7 +73,8 @@ public class MovieAdaptor extends RecyclerView.Adapter<MovieAdaptor.MovieViewHol
         }
 
         void bindItem(Context context, int index) {
-            Picasso.with(context).load(mData.get(index).getMoviePoster()).into(imageView);
+            mCursor.moveToPosition(index);
+            Picasso.with(context).load(mCursor.getString(3)).into(imageView);
         }
 
         @Override
