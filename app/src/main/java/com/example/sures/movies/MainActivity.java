@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdaptor.Item
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         movieAdaptor = new MovieAdaptor(this, this);
 
-        //getSupportLoaderManager().initLoader(ASYNC_LOADER_ID, null, asynchLoaderCallbacks);
+        getSupportLoaderManager().initLoader(ASYNC_LOADER_ID, null, asynchLoaderCallbacks);
         getSupportLoaderManager().initLoader(CURSOR_LOADER_ID, null, cursorLoaderCallbacks);
         RecyclerView recyclerView = findViewById(R.id.main_frame);
         recyclerView.setLayoutManager(gridLayoutManager);
