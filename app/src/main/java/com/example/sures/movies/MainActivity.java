@@ -1,19 +1,25 @@
 package com.example.sures.movies;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import com.example.sures.movies.adaptor.MovieAdaptor;
 import com.example.sures.movies.data.MovieInfo;
 import java.util.ArrayList;
+
+import com.example.sures.movies.data.MoviesContract;
 import com.example.sures.movies.network.MovieLoader;
 
 public class MainActivity extends AppCompatActivity implements MovieAdaptor.ItemOnClickListener {
@@ -22,22 +28,42 @@ public class MainActivity extends AppCompatActivity implements MovieAdaptor.Item
     private final String authority = "https://api.themoviedb.org";
     private MovieAdaptor movieAdaptor;
     private int ASYNC_LOADER_ID = 01;
+    private int CURSOR_LOADER_ID = 02;
 
     private android.support.v4.app.LoaderManager.LoaderCallbacks<ArrayList<MovieInfo>> asynchLoaderCallbacks = new android.support.v4.app.LoaderManager.LoaderCallbacks<ArrayList<MovieInfo>>() {
 
         @NonNull
         @Override
         public Loader<ArrayList<MovieInfo>> onCreateLoader(int id, @Nullable Bundle args) {
-            return new MovieLoader(getApplicationContext());
+            return new MovieLoader(MainActivity.this);
         }
 
         @Override
         public void onLoadFinished(@NonNull Loader<ArrayList<MovieInfo>> loader, ArrayList<MovieInfo> data) {
-            movieAdaptor.updateData(data);
+
         }
 
         @Override
         public void onLoaderReset(@NonNull Loader<ArrayList<MovieInfo>> loader) {
+
+        }
+    };
+
+    private LoaderManager.LoaderCallbacks<Cursor> cursorLoaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
+        @NonNull
+        @Override
+        public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+            return new CursorLoader(getApplicationContext(), MoviesContract.MoviesEntry.CONTENT_POPULAR_MOVIES_URI, null, null, null, MoviesContract.MoviesEntry.COLUMN_MOVIE_ID);
+        }
+
+        @Override
+        public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+            Log.v("Cursor Size", String.valueOf(data.getCount()));
+            movieAdaptor.updateData(data);
+        }
+
+        @Override
+        public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
         }
     };
@@ -49,9 +75,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdaptor.Item
 
         String userPreference = "PopularMovies";
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        movieAdaptor = new MovieAdaptor(new ArrayList<MovieInfo>(), this);
+        movieAdaptor = new MovieAdaptor(this, this);
 
         getSupportLoaderManager().initLoader(ASYNC_LOADER_ID, null, asynchLoaderCallbacks);
+        getSupportLoaderManager().initLoader(CURSOR_LOADER_ID, null, cursorLoaderCallbacks);
         RecyclerView recyclerView = findViewById(R.id.main_frame);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(movieAdaptor);

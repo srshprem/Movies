@@ -37,5 +37,6 @@ public class MovieInfo implements Serializable{
     public String getReleaseDate() {
         return releaseDate;
     }
+
 }
 

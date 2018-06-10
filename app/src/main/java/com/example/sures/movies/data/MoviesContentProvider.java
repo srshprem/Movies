@@ -26,12 +26,12 @@ public class MoviesContentProvider extends ContentProvider {
     public static UriMatcher buildUriMatcher () {
 
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(MoviesContract.AUTHORITY, MoviesContract.PATH_POPULAR_MOVIES, POPULAR_MOVIES);
-        uriMatcher.addURI(MoviesContract.AUTHORITY, MoviesContract.PATH_POPULAR_MOVIES + "/#", POPULAR_MOVIES_WITH_ID);
-        uriMatcher.addURI(MoviesContract.AUTHORITY, MoviesContract.PATH_RATING_MOVIES,RATING_MOVIES);
-        uriMatcher.addURI(MoviesContract.AUTHORITY, MoviesContract.PATH_RATING_MOVIES + "/#", RATING_MOVIES_WITH_ID);
-        uriMatcher.addURI(MoviesContract.AUTHORITY, MoviesContract.PATH_POPULAR_MOVIES,FAVOURITE_MOVIES);
-        uriMatcher.addURI(MoviesContract.AUTHORITY, MoviesContract.PATH_FAVOURITE_MOVIES + "/#", FAVOURITE_MOVIES_WITH_ID);
+        uriMatcher.addURI(MoviesContract.AUTHORITY.toString(), MoviesContract.PATH_POPULAR_MOVIES, POPULAR_MOVIES);
+        uriMatcher.addURI(MoviesContract.AUTHORITY.toString(), MoviesContract.PATH_POPULAR_MOVIES + "/#", POPULAR_MOVIES_WITH_ID);
+        uriMatcher.addURI(MoviesContract.AUTHORITY.toString(), MoviesContract.PATH_RATING_MOVIES,RATING_MOVIES);
+        uriMatcher.addURI(MoviesContract.AUTHORITY.toString(), MoviesContract.PATH_RATING_MOVIES + "/#", RATING_MOVIES_WITH_ID);
+        uriMatcher.addURI(MoviesContract.AUTHORITY.toString(), MoviesContract.PATH_FAVOURITE_MOVIES,FAVOURITE_MOVIES);
+        uriMatcher.addURI(MoviesContract.AUTHORITY.toString(), MoviesContract.PATH_FAVOURITE_MOVIES + "/#", FAVOURITE_MOVIES_WITH_ID);
 
         return uriMatcher;
     }
@@ -118,6 +118,7 @@ public class MoviesContentProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
         getContext().getContentResolver().notifyChange(uri, null);
+        database.close();
         return returnUri;
     }
 
