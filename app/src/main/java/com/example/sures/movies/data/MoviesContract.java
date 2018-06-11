@@ -34,5 +34,14 @@ public class MoviesContract {
         public static final String COLUMN_RELEASE_DATE = "ReleaseDate";
         public static final String COLUMN_REVIEW = "Review";
         public static final String COLUMN_TRAILER = "Trailer";
+
+        public static final int COLUMN_MOVIE_ID_INDEX = 1;
+        public static final int COLUMN_ORIGINAL_TITLE_INDEX = 2;
+        public static final int COLUMN_POSTER_PATH_INDEX = 3;
+        public static final int COLUMN_OVERVIEW_INDEX = 4;
+        public static final int COLUMN_RELEASE_DATE_INDEX = 5;
+        public static final int COLUMN_TRAILER_INDEX = 6;
+        public static final int COLUMN_VOTE_AVERAGE_INDEX = 7;
+        public static final int COLUMN_REVIEW_INDEX = 8;
     }
 }

@@ -168,4 +168,9 @@ public class MoviesContentProvider extends ContentProvider {
         }
         return returnValue;
     }
+
+    @Override
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
+        return super.bulkInsert(uri, values);
+    }
 }

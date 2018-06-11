@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdaptor.Item
 
         @Override
         public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-            Log.v("Cursor Size", String.valueOf(data.getCount()));
             movieAdaptor.updateData(data);
         }
 

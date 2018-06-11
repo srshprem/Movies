@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.example.sures.movies.R;
 import com.squareup.picasso.Picasso;
-import com.example.sures.movies.data.*;
-import java.util.ArrayList;
+import com.example.sures.movies.data.MovieInfo;
+import com.example.sures.movies.data.MoviesContract.MoviesEntry;
 
 public class MovieAdaptor extends RecyclerView.Adapter<MovieAdaptor.MovieViewHolder>{
     private Cursor mCursor;
@@ -29,7 +29,9 @@ public class MovieAdaptor extends RecyclerView.Adapter<MovieAdaptor.MovieViewHol
     public MovieInfo getItem (int index) {
         if (this.mCursor != null) {
             this.mCursor.moveToPosition(index);
-            return new MovieInfo(this.mCursor.getString(0), this.mCursor.getString(1), this.mCursor.getString(2), this.mCursor.getString(3), this.mCursor.getString(4));
+            return new MovieInfo(this.mCursor.getString(MoviesEntry.COLUMN_ORIGINAL_TITLE_INDEX), this.mCursor.getString(MoviesEntry.COLUMN_POSTER_PATH_INDEX),
+                                 this.mCursor.getString(MoviesEntry.COLUMN_OVERVIEW_INDEX), this.mCursor.getString(MoviesEntry.COLUMN_VOTE_AVERAGE_INDEX),
+                                 this.mCursor.getString(MoviesEntry.COLUMN_RELEASE_DATE_INDEX));
         }
         return null;
     }
@@ -52,10 +54,11 @@ public class MovieAdaptor extends RecyclerView.Adapter<MovieAdaptor.MovieViewHol
 
     @Override
     public int getItemCount() {
+        int getCount = 0;
         if (this.mCursor != null) {
-            return this.mCursor.getCount();
+            getCount = this.mCursor.getCount();
         }
-        return 0;
+        return getCount;
     }
 
     public void updateData (Cursor cursor) {
@@ -74,7 +77,7 @@ public class MovieAdaptor extends RecyclerView.Adapter<MovieAdaptor.MovieViewHol
 
         void bindItem(Context context, int index) {
             mCursor.moveToPosition(index);
-            Picasso.with(context).load(mCursor.getString(3)).into(imageView);
+            Picasso.with(context).load(mCursor.getString(MoviesEntry.COLUMN_POSTER_PATH_INDEX)).into(imageView);
         }
 
         @Override
